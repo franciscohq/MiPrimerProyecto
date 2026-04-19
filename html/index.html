@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MiTienda - Ventas Online</title>
+    <title>MiTienda - Catálogo Extendido</title>
     <style>
         * {
             margin: 0;
@@ -18,13 +18,11 @@
             padding: 2rem 1rem;
         }
 
-        /* Contenedor principal */
         .app {
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -63,10 +61,9 @@
             transform: scale(1.02);
         }
 
-        /* Grid de productos */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 2rem;
             margin-bottom: 3rem;
         }
@@ -87,7 +84,7 @@
         }
 
         .product-img {
-            background: #eef2f9;
+            background: linear-gradient(135deg, #eef2f9, #e0e7f5);
             height: 200px;
             display: flex;
             align-items: center;
@@ -118,6 +115,12 @@
             font-size: 1rem;
         }
 
+        .product-stock {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
         .add-to-cart {
             background: #2a5298;
             color: white;
@@ -136,7 +139,6 @@
             background: #0f3b6f;
         }
 
-        /* Carrito lateral (modal) */
         .cart-overlay {
             position: fixed;
             top: 0;
@@ -238,6 +240,11 @@
             font-weight: bold;
             font-size: 1.2rem;
             cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .cart-item-actions button:hover {
+            background: #e0e0e0;
         }
 
         .cart-item-actions span {
@@ -282,7 +289,6 @@
             padding: 2rem;
         }
 
-        /* Toast simple */
         .toast-msg {
             position: fixed;
             bottom: 20px;
@@ -303,6 +309,15 @@
             opacity: 1;
         }
 
+        .category-badge {
+            display: inline-block;
+            background: #e0e7f5;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            margin-top: 0.3rem;
+        }
+
         @media (max-width: 640px) {
             body {
                 padding: 1rem;
@@ -316,7 +331,7 @@
 <body>
 <div class="app">
     <header>
-        <h1>🛍️ Tienda Esencia</h1>
+        <h1>🛍️ Tienda Esencia - 30+ Productos</h1>
         <div class="cart-icon" id="cartIcon">
             🛒 Carrito <span id="cartCount">0</span>
         </div>
@@ -325,7 +340,6 @@
     <div class="products-grid" id="productsContainer"></div>
 </div>
 
-<!-- Modal carrito -->
 <div class="cart-overlay" id="cartOverlay">
     <div class="cart-sidebar">
         <div class="cart-header">
@@ -348,19 +362,64 @@
 <div id="toastMsg" class="toast-msg">✨ Producto agregado</div>
 
 <script>
-    // ---------- DATOS DE PRODUCTOS ----------
+    // ==================== CATÁLOGO EXTENDIDO CON 35 PRODUCTOS ====================
     const productos = [
-        { id: 1, nombre: "Auriculares Bluetooth", precio: 49.99, emoji: "🎧", stock: 10 },
-        { id: 2, nombre: "Mochila Urbana", precio: 39.90, emoji: "🎒", stock: 8 },
-        { id: 3, nombre: "Reloj Inteligente", precio: 89.00, emoji: "⌚", stock: 5 },
-        { id: 4, nombre: "Camiseta Deportiva", precio: 24.50, emoji: "👕", stock: 15 },
-        { id: 5, nombre: "Libro Best Seller", precio: 18.30, emoji: "📚", stock: 12 },
-        { id: 6, nombre: "Lámpara LED", precio: 32.20, emoji: "💡", stock: 7 }
+        // Electrónica
+        { id: 1, nombre: "🎧 Auriculares Bluetooth Sony", precio: 89.99, emoji: "🎧", stock: 15, categoria: "Electrónica" },
+        { id: 2, nombre: "📱 iPhone 15 Pro", precio: 999.99, emoji: "📱", stock: 8, categoria: "Electrónica" },
+        { id: 3, nombre: "💻 MacBook Air M2", precio: 1199.99, emoji: "💻", stock: 5, categoria: "Electrónica" },
+        { id: 4, nombre: "⌚ Apple Watch Series 9", precio: 449.99, emoji: "⌚", stock: 12, categoria: "Electrónica" },
+        { id: 5, nombre: "🎮 PlayStation 5", precio: 499.99, emoji: "🎮", stock: 3, categoria: "Electrónica" },
+        { id: 6, nombre: "📷 Cámara Canon EOS", precio: 649.99, emoji: "📷", stock: 6, categoria: "Electrónica" },
+        { id: 7, nombre: "🔊 Parlante JBL Charge", precio: 129.99, emoji: "🔊", stock: 20, categoria: "Electrónica" },
+        
+        // Accesorios
+        { id: 8, nombre: "🎒 Mochila Urbana", precio: 49.90, emoji: "🎒", stock: 18, categoria: "Accesorios" },
+        { id: 9, nombre: "⌨️ Teclado Mecánico RGB", precio: 79.90, emoji: "⌨️", stock: 14, categoria: "Accesorios" },
+        { id: 10, nombre: "🖱️ Mouse Logitech MX", precio: 89.99, emoji: "🖱️", stock: 22, categoria: "Accesorios" },
+        { id: 11, nombre: "🔋 Power Bank 20000mAh", precio: 39.99, emoji: "🔋", stock: 30, categoria: "Accesorios" },
+        { id: 12, nombre: "🕶️ Gafas de Sol Polarizadas", precio: 59.99, emoji: "🕶️", stock: 25, categoria: "Accesorios" },
+        
+        // Ropa
+        { id: 13, nombre: "👕 Camiseta Deportiva Nike", precio: 34.50, emoji: "👕", stock: 40, categoria: "Ropa" },
+        { id: 14, nombre: "👖 Jeans Slim Fit", precio: 59.99, emoji: "👖", stock: 35, categoria: "Ropa" },
+        { id: 15, nombre: "👟 Zapatillas Running Adidas", precio: 89.99, emoji: "👟", stock: 20, categoria: "Ropa" },
+        { id: 16, nombre: "🧥 Chaqueta de Cuero", precio: 149.99, emoji: "🧥", stock: 10, categoria: "Ropa" },
+        { id: 17, nombre: "🧢 Gorra New Era", precio: 29.99, emoji: "🧢", stock: 45, categoria: "Ropa" },
+        
+        // Hogar
+        { id: 18, nombre: "💡 Lámpara LED Inteligente", precio: 42.20, emoji: "💡", stock: 28, categoria: "Hogar" },
+        { id: 19, nombre: "🛋️ Almohadón Decorativo", precio: 24.99, emoji: "🛋️", stock: 50, categoria: "Hogar" },
+        { id: 20, nombre: "☕ Cafetera Eléctrica", precio: 89.99, emoji: "☕", stock: 12, categoria: "Hogar" },
+        { id: 21, nombre: "🧹 Aspiradora Robot", precio: 249.99, emoji: "🧹", stock: 7, categoria: "Hogar" },
+        { id: 22, nombre: "🖼️ Marco Digital 10''", precio: 79.99, emoji: "🖼️", stock: 15, categoria: "Hogar" },
+        
+        // Libros
+        { id: 23, nombre: "📚 El Principito", precio: 18.30, emoji: "📚", stock: 60, categoria: "Libros" },
+        { id: 24, nombre: "📖 Cien Años de Soledad", precio: 22.99, emoji: "📖", stock: 45, categoria: "Libros" },
+        { id: 25, nombre: "📘 Hábitos Atómicos", precio: 19.99, emoji: "📘", stock: 55, categoria: "Libros" },
+        
+        // Deportes
+        { id: 26, nombre: "⚽ Pelota de Fútbol", precio: 29.99, emoji: "⚽", stock: 30, categoria: "Deportes" },
+        { id: 27, nombre: "🏀 Balón de Baloncesto", precio: 34.99, emoji: "🏀", stock: 25, categoria: "Deportes" },
+        { id: 28, nombre: "🏋️ Kit de Pesas 20kg", precio: 89.99, emoji: "🏋️", stock: 10, categoria: "Deportes" },
+        { id: 29, nombre: "🧘 Yoga Mat Premium", precio: 39.99, emoji: "🧘", stock: 35, categoria: "Deportes" },
+        
+        // Más electrónica
+        { id: 30, nombre: "🎧 AirPods Pro", precio: 249.99, emoji: "🎧", stock: 18, categoria: "Electrónica" },
+        { id: 31, nombre: "📱 Samsung Galaxy S23", precio: 899.99, emoji: "📱", stock: 9, categoria: "Electrónica" },
+        { id: 32, nombre: "💻 iPad Pro 12.9''", precio: 1099.99, emoji: "💻", stock: 6, categoria: "Electrónica" },
+        { id: 33, nombre: "⌚ Garmin Fenix 7", precio: 699.99, emoji: "⌚", stock: 4, categoria: "Electrónica" },
+        
+        // Juguetes
+        { id: 34, nombre: "🧸 Peluche Gigante", precio: 39.99, emoji: "🧸", stock: 25, categoria: "Juguetes" },
+        { id: 35, nombre: "🚗 Coche RC 4x4", precio: 59.99, emoji: "🚗", stock: 18, categoria: "Juguetes" },
+        { id: 36, nombre: "🎲 Juego de Mesa Monopoly", precio: 44.99, emoji: "🎲", stock: 22, categoria: "Juguetes" }
     ];
 
-    // Estado del carrito: { id, nombre, precio, cantidad }
     let cart = [];
-
+    let isLoading = false;
+    
     // Elementos DOM
     const productsContainer = document.getElementById("productsContainer");
     const cartIcon = document.getElementById("cartIcon");
@@ -371,27 +430,28 @@
     const cartCountSpan = document.getElementById("cartCount");
     const checkoutBtn = document.getElementById("checkoutBtn");
     const toastMsg = document.getElementById("toastMsg");
-
-    // Funciones auxiliares
-    function showToast(message = "Producto agregado") {
+    
+    // ==================== FUNCIONES DEL CARRITO ====================
+    
+    function showToast(message, isError = false) {
         toastMsg.textContent = message;
+        toastMsg.style.background = isError ? '#c0392b' : '#1e1e2a';
         toastMsg.classList.add("show");
         setTimeout(() => {
             toastMsg.classList.remove("show");
-        }, 1800);
+            toastMsg.style.background = '#1e1e2a';
+        }, 2000);
     }
-
-    // Guardar carrito en localStorage (opcional, para persistencia)
+    
     function saveCartToLocal() {
         localStorage.setItem("tiendaCart", JSON.stringify(cart));
     }
-
+    
     function loadCartFromLocal() {
         const stored = localStorage.getItem("tiendaCart");
         if (stored) {
             try {
                 cart = JSON.parse(stored);
-                // validar estructura mínima
                 if (!Array.isArray(cart)) cart = [];
             } catch(e) { cart = []; }
         } else {
@@ -400,29 +460,26 @@
         renderCartUI();
         updateCartCounter();
     }
-
-    // Actualizar contador del header
+    
     function updateCartCounter() {
         const totalItems = cart.reduce((acc, item) => acc + item.cantidad, 0);
         cartCountSpan.textContent = totalItems;
     }
-
-    // Calcular total del carrito
+    
     function computeTotal() {
         return cart.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
     }
-
-    // Refrescar vista del carrito (lista y total)
+    
     function renderCartUI() {
         if (!cartItemsList) return;
-
+        
         if (cart.length === 0) {
             cartItemsList.innerHTML = `<div class="empty-cart">🛒 El carrito está vacío</div>`;
             cartTotalSpan.textContent = `$0.00`;
             updateCartCounter();
             return;
         }
-
+        
         let html = '';
         cart.forEach((item, idx) => {
             html += `
@@ -440,13 +497,12 @@
                 </div>
             `;
         });
-
+        
         cartItemsList.innerHTML = html;
         const total = computeTotal();
         cartTotalSpan.textContent = `$${total.toFixed(2)}`;
         updateCartCounter();
-
-        // Agregar event listeners a los botones del carrito
+        
         document.querySelectorAll('.cart-decr').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const id = parseInt(btn.dataset.id);
@@ -466,14 +522,12 @@
             });
         });
     }
-
-    // Modificar cantidad (delta +1 / -1)
+    
     function updateQuantity(productId, delta) {
         const index = cart.findIndex(item => item.id === productId);
         if (index === -1) return;
         const newCantidad = cart[index].cantidad + delta;
         if (newCantidad <= 0) {
-            // eliminar producto si cantidad llega a 0
             cart.splice(index, 1);
         } else {
             cart[index].cantidad = newCantidad;
@@ -481,17 +535,25 @@
         saveCartToLocal();
         renderCartUI();
     }
-
+    
     function removeItemCompletely(productId) {
         cart = cart.filter(item => item.id !== productId);
         saveCartToLocal();
         renderCartUI();
         showToast("Producto eliminado");
     }
-
-    // Agregar producto al carrito
+    
     function addToCart(product) {
+        // Verificar stock
+        const productStock = productos.find(p => p.id === product.id)?.stock || 0;
         const existing = cart.find(item => item.id === product.id);
+        const currentQuantity = existing ? existing.cantidad : 0;
+        
+        if (currentQuantity + 1 > productStock) {
+            showToast(`❌ Stock insuficiente de ${product.nombre}. Solo quedan ${productStock} unidades`, true);
+            return;
+        }
+        
         if (existing) {
             existing.cantidad += 1;
         } else {
@@ -504,34 +566,33 @@
         }
         saveCartToLocal();
         renderCartUI();
-        showToast(`➕ ${product.nombre} añadido`);
+        showToast(`➕ ${product.nombre} añadido al carrito`);
     }
-
-    // Finalizar compra
-    function checkout() {
+    
+    // ==================== CHECKOUT SIMULADO ====================
+    async function checkout() {
         if (cart.length === 0) {
-            showToast("❌ El carrito está vacío");
+            showToast("❌ El carrito está vacío", true);
             return;
         }
+        
         const total = computeTotal();
-        // Simulación de venta exitosa
-        alert(`✅ ¡Compra realizada con éxito!\nTotal: $${total.toFixed(2)}\nGracias por tu compra.`);
-        cart = [];
-        saveCartToLocal();
-        renderCartUI();
-        closeCart();
-        showToast("🎉 Pedido completado");
+        const orderId = 'ORD-' + Date.now();
+        
+        // Simular envío a API
+        showToast("📤 Procesando compra...");
+        
+        setTimeout(() => {
+            alert(`✅ ¡Compra realizada con éxito!\n\nN° Orden: ${orderId}\nTotal: $${total.toFixed(2)}\nProductos: ${cart.length} ítems\n\nGracias por tu compra en Tienda Esencia 💝`);
+            cart = [];
+            saveCartToLocal();
+            renderCartUI();
+            closeCart();
+            showToast("🎉 Pedido completado");
+        }, 1500);
     }
-
-    // cerrar carrito
-    function openCart() {
-        cartOverlay.classList.add("open");
-    }
-    function closeCart() {
-        cartOverlay.classList.remove("open");
-    }
-
-    // Renderizar productos en la grilla
+    
+    // ==================== RENDERIZADO DE PRODUCTOS ====================
     function renderProducts() {
         if (!productsContainer) return;
         let productsHtml = '';
@@ -542,14 +603,15 @@
                     <div class="product-info">
                         <div class="product-title">${escapeHtml(prod.nombre)}</div>
                         <div class="product-price">${prod.precio.toFixed(2)}</div>
+                        <div class="product-stock">📦 Stock: ${prod.stock} unidades</div>
+                        <span class="category-badge">${prod.categoria}</span>
                         <button class="add-to-cart" data-id="${prod.id}">Agregar al carrito</button>
                     </div>
                 </div>
             `;
         });
         productsContainer.innerHTML = productsHtml;
-
-        // Asignar eventos a botones "Agregar"
+        
         document.querySelectorAll('.add-to-cart').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const productId = parseInt(btn.dataset.id);
@@ -560,33 +622,37 @@
             });
         });
     }
-
-    // Escapar HTML básico (seguridad)
+    
     function escapeHtml(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
-        });
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
     }
-
-    // Eventos de UI del carrito
+    
+    // ==================== MANEJADORES DE UI ====================
+    function openCart() {
+        cartOverlay.classList.add("open");
+    }
+    
+    function closeCart() {
+        cartOverlay.classList.remove("open");
+    }
+    
     cartIcon.addEventListener("click", openCart);
     closeCartBtn.addEventListener("click", closeCart);
     cartOverlay.addEventListener("click", (e) => {
         if (e.target === cartOverlay) closeCart();
     });
     checkoutBtn.addEventListener("click", checkout);
-
-    // Inicializar la tienda
+    
+    // ==================== INICIALIZACIÓN ====================
     function init() {
         renderProducts();
-        loadCartFromLocal();   // carga carrito previo y refresca vista
+        loadCartFromLocal();
+        showToast(`🛍️ ${productos.length} productos disponibles`);
+        console.log(`✅ Tienda iniciada con ${productos.length} productos en catálogo`);
     }
-
+    
     init();
 </script>
 </body>
